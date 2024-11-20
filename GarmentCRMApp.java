@@ -307,3 +307,63 @@ public class GarmentCRMApp {
         app.start();
     }
 }
+
+// Add this method in the `GarmentCRMApp` class
+private void deleteBuyer() {
+    System.out.print("Enter Buyer ID to delete: ");
+    String input = scanner.nextLine();
+    try {
+        int id = Integer.parseInt(input);
+        Buyer buyer = findBuyerById(id);
+        if (buyer == null) {
+            System.out.println("Buyer with ID " + id + " not found.\n");
+            return;
+        }
+
+        // Remove buyer and associated outreach records
+        buyers.remove(buyer);
+        outreaches.removeIf(outreach -> outreach.getBuyerId() == id);
+
+        System.out.println("Buyer and associated outreach records deleted successfully!\n");
+    } catch (NumberFormatException e) {
+        System.out.println("Invalid ID format. Please enter a numeric value.\n");
+    }
+}
+
+private void buyerManagementMenu() {
+    while (true) {
+        System.out.println("\n--- Buyer Management ---");
+        System.out.println("1. Add Buyer");
+        System.out.println("2. View All Buyers");
+        System.out.println("3. Search Buyer by ID");
+        System.out.println("4. Update Buyer Information");
+        System.out.println("5. Delete Buyer"); // New Option
+        System.out.println("6. Back to Main Menu");
+        System.out.print("Choose an option: ");
+
+        String choice = scanner.nextLine();
+
+        switch (choice) {
+            case "1":
+                addBuyer();
+                break;
+            case "2":
+                viewAllBuyers();
+                break;
+            case "3":
+                searchBuyerById();
+                break;
+            case "4":
+                updateBuyer();
+                break;
+            case "5":
+                deleteBuyer(); // Call the new method
+                break;
+            case "6":
+                System.out.println();
+                return;
+            default:
+                System.out.println("Invalid option. Please try again.\n");
+        }
+    }
+}
